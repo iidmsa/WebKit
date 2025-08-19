@@ -36,8 +36,8 @@
 namespace WebGPU {
 
 Lock QuerySet::querySetLock;
-__attribute__((no_destroy)) std::unique_ptr<Vector<id<MTLCounterSampleBuffer>>> QuerySet::m_counterSampleBuffers;
-__attribute__((no_destroy)) std::unique_ptr<Vector<RangeSet<Range<uint32_t>>>> QuerySet::m_counterSampleBufferFreeRanges;
+WTF_NO_DESTROY std::unique_ptr<Vector<id<MTLCounterSampleBuffer>>> QuerySet::m_counterSampleBuffers;
+WTF_NO_DESTROY std::unique_ptr<Vector<RangeSet<Range<uint32_t>>>> QuerySet::m_counterSampleBufferFreeRanges;
 
 Ref<QuerySet> Device::createQuerySet(const WGPUQuerySetDescriptor& descriptor)
 {

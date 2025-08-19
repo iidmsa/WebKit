@@ -118,7 +118,7 @@ CrossOriginPreflightResultCache& CrossOriginPreflightResultCache::singleton()
 {
     ASSERT(isMainThread());
 
-    static NeverDestroyed<CrossOriginPreflightResultCache> cache;
+    WTF_NO_DESTROY static NeverDestroyed<CrossOriginPreflightResultCache> cache;
     return cache;
 }
 

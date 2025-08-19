@@ -34,7 +34,7 @@ namespace WTF {
 MainThreadDispatcher& MainThreadDispatcher::singleton()
 {
     static std::once_flag onceKey;
-    static LazyNeverDestroyed<Ref<MainThreadDispatcher>> dispatcher;
+    WTF_NO_DESTROY static LazyNeverDestroyed<Ref<MainThreadDispatcher>> dispatcher;
     std::call_once(onceKey, [] {
         dispatcher.construct(adoptRef(*new MainThreadDispatcher()));
     });

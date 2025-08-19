@@ -707,7 +707,7 @@ SelectorQuery::SelectorQuery(CSSSelectorList&& selectorList)
 
 SelectorQueryCache& SelectorQueryCache::singleton()
 {
-    static NeverDestroyed<SelectorQueryCache> cache;
+    WTF_NO_DESTROY static NeverDestroyed<SelectorQueryCache> cache;
     return cache.get();
 }
 

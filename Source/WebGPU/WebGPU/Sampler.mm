@@ -35,9 +35,9 @@
 
 namespace WebGPU {
 
-__attribute__((no_destroy)) std::unique_ptr<Sampler::CachedSamplerStateContainer> Sampler::cachedSamplerStates = nullptr;
-__attribute__((no_destroy)) std::unique_ptr<Sampler::RetainedSamplerStateContainer> Sampler::retainedSamplerStates = nullptr;
-__attribute__((no_destroy)) std::unique_ptr<Sampler::CachedKeyContainer> Sampler::lastAccessedKeys = nullptr;
+WTF_NO_DESTROY std::unique_ptr<Sampler::CachedSamplerStateContainer> Sampler::cachedSamplerStates = nullptr;
+WTF_NO_DESTROY std::unique_ptr<Sampler::RetainedSamplerStateContainer> Sampler::retainedSamplerStates = nullptr;
+WTF_NO_DESTROY std::unique_ptr<Sampler::CachedKeyContainer> Sampler::lastAccessedKeys = nullptr;
 Lock Sampler::samplerStateLock;
 
 static bool validateCreateSampler(Device& device, const WGPUSamplerDescriptor& descriptor)

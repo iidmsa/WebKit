@@ -34,7 +34,7 @@
 namespace WebCore {
 DEFINE_ALLOCATOR_WITH_HEAP_IDENTIFIER(CSSValuePool);
 
-LazyNeverDestroyed<StaticCSSValuePool> staticCSSValuePool;
+WTF_NO_DESTROY LazyNeverDestroyed<StaticCSSValuePool> staticCSSValuePool;
 
 StaticCSSValuePool::StaticCSSValuePool()
 {
@@ -68,7 +68,7 @@ CSSValuePool::CSSValuePool() = default;
 // FIXME: Consider a design where the value pool thread-local storage so callers don't have to deal directly with the value pool at all.
 CSSValuePool& CSSValuePool::singleton()
 {
-    static MainThreadNeverDestroyed<CSSValuePool> pool;
+    WTF_NO_DESTROY static MainThreadNeverDestroyed<CSSValuePool> pool;
     return pool;
 }
 

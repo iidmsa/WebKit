@@ -653,6 +653,20 @@
 #define WTF_UNSAFE_BUFFER_USAGE
 #endif
 
+/* WTF_NO_DESTROY */
+
+#if COMPILER(CLANG)
+#if COMPILER_HAS_CPP_ATTRIBUTE(clang::no_destroy)
+#define WTF_NO_DESTROY [[clang::no_destroy]]
+#elif COMPILER_HAS_ATTRIBUTE(no_destroy)
+#define WTF_NO_DESTROY __attribute__((__no_destroy__))
+#else
+#define WTF_NO_DESTROY
+#endif
+#else
+#define WTF_NO_DESTROY
+#endif
+
 /* WTF_IGNORE_WARNINGS_IN_THIRD_PARTY_CODE */
 
 #define WTF_IGNORE_WARNINGS_IN_THIRD_PARTY_CODE_BEGIN \

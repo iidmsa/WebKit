@@ -36,7 +36,7 @@ namespace WebCore {
 
 ScrollingThread& ScrollingThread::singleton()
 {
-    static LazyNeverDestroyed<ScrollingThread> scrollingThread;
+    WTF_NO_DESTROY static LazyNeverDestroyed<ScrollingThread> scrollingThread;
     static std::once_flag onceFlag;
     std::call_once(onceFlag, [] {
         scrollingThread.construct();

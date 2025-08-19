@@ -53,7 +53,7 @@ static std::atomic<bool> s_hasCreatedMemoryPressureHandler;
 
 MemoryPressureHandler& MemoryPressureHandler::singleton()
 {
-    static LazyNeverDestroyed<MemoryPressureHandler> memoryPressureHandler;
+    WTF_NO_DESTROY static LazyNeverDestroyed<MemoryPressureHandler> memoryPressureHandler;
     static std::once_flag onceKey;
     std::call_once(onceKey, [&] {
         memoryPressureHandler.construct();
