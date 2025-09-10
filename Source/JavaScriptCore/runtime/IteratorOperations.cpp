@@ -247,6 +247,61 @@ IterationRecord iteratorDirect(JSGlobalObject* globalObject, JSValue object)
     return { object, object.get(globalObject, globalObject->vm().propertyNames->next) };
 }
 
+IterableValidationResult validateIterable(VM&, JSValue iterable, JSValue symbolIterator)
+{
+    if (!symbolIterator.isCallable()) [[unlikely]] {
+        if (iterable.isNumber())
+            return IterableValidationResult::NumberNotIterable;
+        if (iterable.isBoolean())
+            return IterableValidationResult::BooleanNotIterable;
+        if (iterable.isSymbol())
+            return IterableValidationResult::SymbolNotIterable;
+        if (iterable.isNull())
+            return IterableValidationResult::NullNotIterable;
+        if (iterable.isUndefined())
+            return IterableValidationResult::UndefinedNotIterable;
+        if (iterable.isObject())
+            return IterableValidationResult::ObjectNotIterable;
+        return IterableValidationResult::ValueNotIterable;
+    }
+
+    return IterableValidationResult::Valid;
+}
+
+JSObject* createIteratorError(JSGlobalObject* globalObject, VM&, IterableValidationResult result, JSValue iterable)
+{
+    String errorMessage;
+
+    switch (result) {
+    case IterableValidationResult::NullNotIterable:
+        errorMessage = "null is not an object"_s;
+        break;
+    case IterableValidationResult::UndefinedNotIterable:
+        errorMessage = "undefined is not an object"_s;
+        break;
+    case IterableValidationResult::NumberNotIterable:
+        errorMessage = "number is not iterable"_s;
+        break;
+    case IterableValidationResult::BooleanNotIterable:
+        errorMessage = iterable.asBoolean() ? "true is not iterable"_s : "false is not iterable"_s;
+        break;
+    case IterableValidationResult::SymbolNotIterable:
+        errorMessage = "value is not iterable"_s;
+        break;
+    case IterableValidationResult::ObjectNotIterable:
+        errorMessage = "{} is not iterable"_s;
+        break;
+    case IterableValidationResult::ValueNotIterable:
+        errorMessage = "value is not iterable"_s;
+        break;
+    case IterableValidationResult::Valid:
+        RELEASE_ASSERT_NOT_REACHED();
+        break;
+    }
+
+    return createTypeError(globalObject, errorMessage);
+}
+
 IterationMode getIterationMode(VM&, JSGlobalObject* globalObject, JSValue iterable, JSValue symbolIterator)
 {
     if (!isJSArray(iterable))

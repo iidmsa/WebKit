@@ -59,6 +59,20 @@ JS_EXPORT_PRIVATE IterationRecord iteratorDirect(JSGlobalObject*, JSValue);
 JS_EXPORT_PRIVATE JSValue iteratorMethod(JSGlobalObject*, JSObject*);
 JS_EXPORT_PRIVATE bool hasIteratorMethod(JSGlobalObject*, JSValue);
 
+enum class IterableValidationResult : uint8_t {
+    Valid,
+    NullNotIterable,
+    UndefinedNotIterable,
+    NumberNotIterable,
+    BooleanNotIterable,
+    SymbolNotIterable,
+    ObjectNotIterable,
+    ValueNotIterable
+};
+
+JS_EXPORT_PRIVATE IterableValidationResult validateIterable(VM&, JSValue iterable, JSValue symbolIterator);
+JS_EXPORT_PRIVATE JSObject* createIteratorError(JSGlobalObject*, VM&, IterableValidationResult, JSValue iterable);
+
 JS_EXPORT_PRIVATE IterationMode getIterationMode(VM&, JSGlobalObject*, JSValue iterable);
 JS_EXPORT_PRIVATE IterationMode getIterationMode(VM&, JSGlobalObject*, JSValue iterable, JSValue symbolIterator);
 
@@ -170,7 +184,14 @@ void forEachInIterable(JSGlobalObject& globalObject, JSObject* iterable, JSValue
     auto& vm = getVM(&globalObject);
     auto scope = DECLARE_THROW_SCOPE(vm);
 
-    if (getIterationMode(vm, &globalObject, iterable, iteratorMethod) == IterationMode::FastArray) {
+    auto validationResult = validateIterable(vm, iterable, iteratorMethod);
+    if (validationResult != IterableValidationResult::Valid) [[unlikely]] {
+        throwException(&globalObject, scope, createIteratorError(&globalObject, vm, validationResult, iterable));
+        return;
+    }
+
+    auto IterationMode = getIterationMode(vm, &globalObject, iterable, iteratorMethod);
+    if (IterationMode == IterationMode::FastArray) {
         auto* array = jsCast<JSArray*>(iterable);
         for (unsigned index = 0; index < array->length(); ++index) {
             JSValue nextValue = array->getIndex(&globalObject, index);
