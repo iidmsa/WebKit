@@ -323,7 +323,6 @@ set(WTF_PUBLIC_HEADERS
     StdUnorderedSet.h
     Stopwatch.h
     StreamBuffer.h
-    StringExtras.h
     StringHashDumpContext.h
     StringPrintStream.h
     StructDump.h

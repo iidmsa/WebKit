@@ -35,7 +35,6 @@
 #include <WebCore/SharedBufferChunkReader.h>
 #endif
 #include <wtf/MainThread.h>
-#include <wtf/StringExtras.h>
 #include <wtf/text/StringCommon.h>
 
 using namespace WebCore;

@@ -34,7 +34,6 @@
 #include <wtf/MainThread.h>
 #include <wtf/MappedFileData.h>
 #include <wtf/StdLibExtras.h>
-#include <wtf/StringExtras.h>
 #include <wtf/text/MakeString.h>
 
 namespace TestWebKitAPI {
