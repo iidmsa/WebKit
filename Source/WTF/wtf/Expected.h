@@ -275,7 +275,7 @@ struct voidbase {
 } // namespace __expected_detail
 
 template<class T, class E>
-class expected : private __expected_detail::base<T, E> {
+class [[nodiscard]] expected : private __expected_detail::base<T, E> {
     WTF_DEPRECATED_MAKE_FAST_ALLOCATED(expected);
     typedef __expected_detail::base<T, E> base;
 
@@ -343,7 +343,7 @@ public:
 };
 
 template<class E>
-class expected<void, E> : private __expected_detail::voidbase<E> {
+class [[nodiscard]] expected<void, E> : private __expected_detail::voidbase<E> {
     typedef __expected_detail::voidbase<E> base;
 
 public:
