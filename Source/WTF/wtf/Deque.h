@@ -34,6 +34,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 #include <wtf/Vector.h>
 
 namespace WTF {
@@ -462,8 +463,7 @@ template<typename T, size_t inlineCapacity>
 template<typename U>
 bool Deque<T, inlineCapacity>::contains(const U& searchValue) const
 {
-    auto endIterator = end();
-    return std::find(begin(), endIterator, searchValue) != endIterator;
+    return std::ranges::contains(*this, searchValue);
 }
 
 template<typename T, size_t inlineCapacity>

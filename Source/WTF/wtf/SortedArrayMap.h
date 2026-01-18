@@ -221,7 +221,7 @@ template<typename ElementType, std::size_t N> template<typename KeyArgument> inl
     if (!parsedKey)
         return false;
     if constexpr (N < binarySearchThreshold)
-        return std::find(m_array.begin(), m_array.end(), *parsedKey) != m_array.end();
+        return std::ranges::contains(m_array, *parsedKey);
     auto iterator = std::lower_bound(m_array.begin(), m_array.end(), *parsedKey);
     return iterator != m_array.end() && *iterator == *parsedKey;
 }
