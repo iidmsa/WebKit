@@ -58,8 +58,8 @@ auto CSSValueConversion<MarginTrim>::operator()(BuilderState& state, const CSSVa
         return CSS::Keyword::None { };
 
     MarginTrimSideEnumSet result;
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueBlock:
             result.value.add({ Style::MarginTrimSide::BlockStart, Style::MarginTrimSide::BlockEnd });
             break;

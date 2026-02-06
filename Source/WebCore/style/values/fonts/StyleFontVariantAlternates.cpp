@@ -57,7 +57,7 @@ auto CSSValueConversion<FontVariantAlternates>::operator()(BuilderState& state, 
             state.setCurrentPropertyInvalidAtComputedValueTime();
             return false;
         }
-        for (Ref argument : function) {
+        for (auto& argument : function) {
             RefPtr primitiveArgument = dynamicDowncast<CSSPrimitiveValue>(argument);
             if (!primitiveArgument || !primitiveArgument->isCustomIdent()) {
                 state.setCurrentPropertyInvalidAtComputedValueTime();
@@ -86,7 +86,7 @@ auto CSSValueConversion<FontVariantAlternates>::operator()(BuilderState& state, 
 
     auto result = FontVariantAlternates::Platform::Normal();
 
-    for (Ref item : *list) {
+    for (auto& item : *list) {
         if (RefPtr primitive = dynamicDowncast<CSSPrimitiveValue>(item)) {
             switch (primitive->valueID()) {
             case CSSValueHistoricalForms:
@@ -96,7 +96,7 @@ auto CSSValueConversion<FontVariantAlternates>::operator()(BuilderState& state, 
                 state.setCurrentPropertyInvalidAtComputedValueTime();
                 return CSS::Keyword::Normal { };
             }
-        } else if (RefPtr function = dynamicDowncast<CSSFunctionValue>(item.get())) {
+        } else if (RefPtr function = dynamicDowncast<CSSFunctionValue>(item)) {
             switch (function->name()) {
             case CSSValueSwash:
                 if (!processSingleItemFunction(*function, result.valuesRef().swash))

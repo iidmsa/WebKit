@@ -255,7 +255,7 @@ void ChildChangeInvalidation::traverseRemovedElements(Function&& function)
         if (!needsDescendantTraversal)
             continue;
 
-        for (Ref descendant : descendantsOfType<Element>(*toRemove))
+        for (auto& descendant : descendantsOfType<Element>(*toRemove))
             function(descendant);
     }
 }
@@ -283,7 +283,7 @@ void ChildChangeInvalidation::traverseAddedElements(Function&& function)
     if (!needsDescendantTraversal(features))
         return;
 
-    for (Ref descendant : descendantsOfType<Element>(*newElement))
+    for (auto& descendant : descendantsOfType<Element>(*newElement))
         function(descendant);
 }
 

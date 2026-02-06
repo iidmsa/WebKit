@@ -154,7 +154,7 @@ auto CSSValueConversion<GridTemplateList>::operator()(BuilderState& state, const
         if (!vectorValue)
             return;
 
-        for (Ref currentValue : *vectorValue) {
+        for (auto& currentValue : *vectorValue) {
             if (RefPtr namesValue = dynamicDowncast<CSSGridLineNamesValue>(currentValue))
                 repeatList.append(Vector<String>(namesValue->names()));
             else {
@@ -199,7 +199,7 @@ auto CSSValueConversion<GridTemplateList>::operator()(BuilderState& state, const
     if (!valueList)
         addOne(value);
     else {
-        for (Ref value : *valueList)
+        for (auto& value : *valueList)
             addOne(value);
     }
 

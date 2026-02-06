@@ -49,8 +49,8 @@ auto CSSValueConversion<TextEmphasisPosition>::operator()(BuilderState& state, c
         return { TextEmphasisPositionValue::Over, TextEmphasisPositionValue::Right };
 
     TextEmphasisPositionValueEnumSet result;
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueOver:
             if (result.contains(TextEmphasisPositionValue::Under)) {
                 state.setCurrentPropertyInvalidAtComputedValueTime();

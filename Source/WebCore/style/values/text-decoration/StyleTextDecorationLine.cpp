@@ -95,7 +95,7 @@ auto CSSValueConversion<TextDecorationLine>::operator()(BuilderState& state, con
     if (RefPtr valueList = dynamicDowncast<CSSValueList>(value)) {
         OptionSet<TextDecorationLine::Flag> flags;
 
-        for (Ref item : *valueList) {
+        for (auto& item : *valueList) {
             RefPtr primitiveValue = requiredDowncast<CSSPrimitiveValue>(state, item);
             if (!primitiveValue)
                 return invalidValue();

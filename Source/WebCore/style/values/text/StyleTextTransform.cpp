@@ -59,8 +59,8 @@ auto CSSValueConversion<TextTransform>::operator()(BuilderState& state, const CS
         return CSS::Keyword::None { };
 
     TextTransformValueEnumSet result;
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueCapitalize:
             if (result.containsAny({ TextTransformValue::Uppercase, TextTransformValue::Lowercase })) {
                 state.setCurrentPropertyInvalidAtComputedValueTime();

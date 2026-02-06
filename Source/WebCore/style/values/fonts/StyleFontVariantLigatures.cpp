@@ -59,8 +59,8 @@ auto CSSValueConversion<FontVariantLigatures>::operator()(BuilderState& state, c
     auto historical = Normal;
     auto contextual = Normal;
 
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueNoCommonLigatures:
             common = No;
             break;

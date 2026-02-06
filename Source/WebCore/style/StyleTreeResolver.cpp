@@ -98,8 +98,8 @@ TreeResolver::Scope::Scope(Document& document, Update& update)
     document.setIsResolvingTreeStyle(true);
 
     // Ensure all shadow tree resolvers exist so their construction doesn't depend on traversal.
-    for (Ref shadowRoot : document.inDocumentShadowRoots())
-        const_cast<ShadowRoot&>(shadowRoot.get()).styleScope().resolver();
+    for (auto& shadowRoot : document.inDocumentShadowRoots())
+        const_cast<ShadowRoot&>(shadowRoot).styleScope().resolver();
 
     selectorMatchingState.containerQueryEvaluationState.styleUpdate = &update;
 }
@@ -1176,8 +1176,8 @@ static bool hasLoadingStylesheet(const Style::Scope& styleScope, const Element& 
         return true;
     if (!checkDescendants)
         return false;
-    for (Ref descendant : descendantsOfType<Element>(element)) {
-        if (styleScope.hasPendingSheetInBody(descendant.get()))
+    for (auto& descendant : descendantsOfType<Element>(element)) {
+        if (styleScope.hasPendingSheetInBody(descendant))
             return true;
     };
     return false;

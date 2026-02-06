@@ -57,8 +57,8 @@ auto CSSValueConversion<TouchAction>::operator()(BuilderState& state, const CSSV
         return CSS::Keyword::Auto { };
 
     TouchActionValueEnumSet result;
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValuePanX:
             result.value.add(TouchActionValue::PanX);
             break;

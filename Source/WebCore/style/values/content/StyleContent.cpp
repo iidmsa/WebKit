@@ -130,10 +130,10 @@ auto CSSValueConversion<Content>::operator()(BuilderState& state, const CSSValue
             return { };
 
         StringBuilder altTextBuilder;
-        for (Ref item : *altTextList) {
-            if (item->isString())
-                altTextBuilder.append(item->stringValue());
-            else if (RefPtr attr = item->cssAttrValue())
+        for (auto& item : *altTextList) {
+            if (item.isString())
+                altTextBuilder.append(item.stringValue());
+            else if (RefPtr attr = item.cssAttrValue())
                 altTextBuilder.append(processAttrContent(*attr));
         }
         return altTextBuilder.toString();

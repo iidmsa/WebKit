@@ -297,11 +297,11 @@ void applyValueCoordinatedValueListProperty(BuilderState& builderState, CSSValue
 
     size_t i = 0;
     if (RefPtr valueList = dynamicDowncast<CSSValueList>(value)) {
-        for (Ref item : *valueList) {
+        for (auto& item : *valueList) {
             if (i >= list.computedLength())
                 list.append(typename ListType::value_type { });
 
-            set(i, item.get());
+            set(i, item);
             ++i;
         }
     } else {
@@ -674,8 +674,8 @@ inline float BuilderCustom::determineRubyTextSizeMultiplier(BuilderState& builde
         // the bopomofo. This code will go away if we make a special renderer
         // for the tone marks eventually.
         if (RefPtr element = builderState.element()) {
-            for (Ref ancestor : ancestorsOfType<HTMLElement>(*element)) {
-                if (ancestor->hasTagName(HTMLNames::rtTag))
+            for (auto& ancestor : ancestorsOfType<HTMLElement>(*element)) {
+                if (ancestor.hasTagName(HTMLNames::rtTag))
                     return 1.0f;
             }
         }

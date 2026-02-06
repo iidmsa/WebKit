@@ -72,7 +72,7 @@ auto CSSValueConversion<ShapeOutside>::operator()(BuilderState& state, const CSS
     };
 
     if (RefPtr list = dynamicDowncast<CSSValueList>(value)) {
-        for (Ref currentValue : *list)
+        for (auto& currentValue : *list)
             processSingleValue(currentValue);
     } else
         processSingleValue(value);

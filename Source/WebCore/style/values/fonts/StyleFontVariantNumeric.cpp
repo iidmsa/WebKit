@@ -56,8 +56,8 @@ auto CSSValueConversion<FontVariantNumeric>::operator()(BuilderState& state, con
     auto ordinal = FontVariantNumericOrdinal::Normal;
     auto slashedZero = FontVariantNumericSlashedZero::Normal;
 
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueLiningNums:
             figure = FontVariantNumericFigure::LiningNumbers;
             break;

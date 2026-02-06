@@ -83,8 +83,8 @@ auto CSSValueConversion<PositionTryFallback>::operator()(BuilderState& state, co
         auto rule = std::optional<ScopedName> { };
         auto tactics = SpaceSeparatedVector<PositionTryFallbackTactic> { };
 
-        for (Ref item : *valueList) {
-            switch (item->valueID()) {
+        for (auto& item : *valueList) {
+            switch (item.valueID()) {
             case CSSValueFlipBlock:
                 tactics.value.append(PositionTryFallbackTactic::FlipBlock);
                 break;
@@ -101,8 +101,8 @@ auto CSSValueConversion<PositionTryFallback>::operator()(BuilderState& state, co
                 tactics.value.append(PositionTryFallbackTactic::FlipY);
                 break;
             case CSSValueInvalid:
-                if (item->isCustomIdent() && !rule) {
-                    rule = ScopedName { AtomString { item->customIdent() }, state.styleScopeOrdinal() };
+                if (item.isCustomIdent() && !rule) {
+                    rule = ScopedName { AtomString { item.customIdent() }, state.styleScopeOrdinal() };
                     break;
                 }
                 [[fallthrough]];

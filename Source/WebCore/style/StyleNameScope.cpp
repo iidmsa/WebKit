@@ -53,8 +53,8 @@ auto CSSValueConversion<NameScope>::operator()(BuilderState& state, const CSSVal
         return CSS::Keyword::None { };
 
     CommaSeparatedListHashSet<CustomIdentifier> names;
-    for (Ref item : *list)
-        names.value.add({ AtomString { item->stringValue() } });
+    for (auto& item : *list)
+        names.value.add({ AtomString { item.stringValue() } });
 
     return { WTF::move(names), state.styleScopeOrdinal() };
 }

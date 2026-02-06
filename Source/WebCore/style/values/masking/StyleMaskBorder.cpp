@@ -69,8 +69,8 @@ auto CSSValueConversion<MaskBorder>::operator()(BuilderState& state, const CSSVa
     if (!borderImage)
         return result;
 
-    for (Ref current : *borderImage) {
-        if (current->isImage())
+    for (auto& current : *borderImage) {
+        if (current.isImage())
             result.maskBorderSource = toStyleFromCSSValue<MaskBorderSource>(state, current);
         else if (RefPtr slice = dynamicDowncast<CSSBorderImageSliceValue>(current))
             result.maskBorderSlice = toStyleFromCSSValue<MaskBorderSlice>(state, *slice);
@@ -81,7 +81,7 @@ auto CSSValueConversion<MaskBorder>::operator()(BuilderState& state, const CSSVa
                 result.maskBorderWidth = toStyleFromCSSValue<MaskBorderWidth>(state, *width);
             if (RefPtr outset = slashList->item(2))
                 result.maskBorderOutset = toStyleFromCSSValue<MaskBorderOutset>(state, *outset);
-        } else if (current->isPair())
+        } else if (current.isPair())
             result.maskBorderRepeat = toStyleFromCSSValue<MaskBorderRepeat>(state, current);
     }
 

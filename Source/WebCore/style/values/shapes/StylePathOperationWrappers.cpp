@@ -94,7 +94,7 @@ RefPtr<PathOperation> CSSValueConversion<RefPtr<PathOperation>>::operator()(Buil
     };
 
     if (RefPtr list = dynamicDowncast<CSSValueList>(value)) {
-        for (Ref currentValue : *list) {
+        for (auto& currentValue : *list) {
             if (!processSingleValue(currentValue))
                 return nullptr;
         }

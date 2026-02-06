@@ -220,8 +220,8 @@ auto CSSValueConversion<WillChange>::operator()(BuilderState& state, const CSSVa
 
     auto result = WillChangeAnimatableFeatures { };
 
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueScrollPosition:
             result.addFeature(WillChangeAnimatableFeature::Feature::ScrollPosition);
             break;
@@ -229,8 +229,8 @@ auto CSSValueConversion<WillChange>::operator()(BuilderState& state, const CSSVa
             result.addFeature(WillChangeAnimatableFeature::Feature::Contents);
             break;
         default:
-            if (item->isPropertyID()) {
-                if (auto propertyID = item->propertyID(); isExposed(propertyID, &state.document().settings())) {
+            if (item.isPropertyID()) {
+                if (auto propertyID = item.propertyID(); isExposed(propertyID, &state.document().settings())) {
                     result.addFeature(WillChangeAnimatableFeature::Feature::Property, propertyID);
                     break;
                 }

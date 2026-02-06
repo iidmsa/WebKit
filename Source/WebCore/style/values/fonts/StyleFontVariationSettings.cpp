@@ -61,10 +61,10 @@ auto CSSValueConversion<FontVariationSettings>::operator()(BuilderState& state, 
         return CSS::Keyword::Normal { };
 
     WebCore::FontVariationSettings platformSettings;
-    for (Ref setting : *list) {
+    for (auto& setting : *list) {
         platformSettings.insert({
-            setting->tag(),
-            toStyleFromCSSValue<FontVariationSettings::Value>(state, setting->value()).value
+            setting.tag(),
+            toStyleFromCSSValue<FontVariationSettings::Value>(state, setting.value()).value
         });
     }
 

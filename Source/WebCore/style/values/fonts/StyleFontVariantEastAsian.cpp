@@ -54,8 +54,8 @@ auto CSSValueConversion<FontVariantEastAsian>::operator()(BuilderState& state, c
     auto width = FontVariantEastAsianWidth::Normal;
     auto ruby = FontVariantEastAsianRuby::Normal;
 
-    for (Ref item : *list) {
-        switch (item->valueID()) {
+    for (auto& item : *list) {
+        switch (item.valueID()) {
         case CSSValueJis78:
             variant = FontVariantEastAsianVariant::Jis78;
             break;

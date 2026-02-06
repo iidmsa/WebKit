@@ -115,7 +115,7 @@ inline auto requiredListDowncast(BuilderState& builderState, const CSSValue& val
         builderState.setCurrentPropertyInvalidAtComputedValueTime();
         return { };
     }
-    for (Ref value : *listValue) {
+    for (auto& value : *listValue) {
         if (!requiredDowncast<ValueType>(builderState, value)) [[unlikely]]
             return { };
     }
