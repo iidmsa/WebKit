@@ -28,70 +28,68 @@
 
 #include <wtf/SIMDUTF.h>
 
-WTF_ALLOW_UNSAFE_BUFFER_USAGE_BEGIN
-
 namespace WTF {
 
 SUPPRESS_NODELETE SUPPRESS_ASAN
-const float* findFloatAlignedImpl(const float* pointer, float target, size_t length)
+const float* findFloatAlignedImpl(std::span<const float> buffer, float target)
 {
-    ASSERT(!(reinterpret_cast<uintptr_t>(pointer) & 0b11));
+    ASSERT(!(reinterpret_cast<uintptr_t>(buffer.data()) & 0b11));
 
     constexpr simde_uint32x4_t indexMask { 0, 1, 2, 3 };
 
-    ASSERT(length);
-    ASSERT(!(reinterpret_cast<uintptr_t>(pointer) & 0xf));
-    ASSERT((reinterpret_cast<uintptr_t>(pointer) & ~static_cast<uintptr_t>(0xf)) == reinterpret_cast<uintptr_t>(pointer));
-    const float* cursor = pointer;
+    ASSERT(buffer.size());
+    ASSERT(!(reinterpret_cast<uintptr_t>(buffer.data()) & 0xf));
+    ASSERT((reinterpret_cast<uintptr_t>(buffer.data()) & ~static_cast<uintptr_t>(0xf)) == reinterpret_cast<uintptr_t>(buffer.data()));
+    std::span<const float> cursor = buffer;
     constexpr size_t stride = SIMD::stride<float>;
 
     simde_float32x4_t targetsVector = simde_vdupq_n_f32(target);
 
     while (true) {
-        simde_float32x4_t value = simde_vld1q_f32(cursor);
+        simde_float32x4_t value = simde_vld1q_f32(cursor.data());
         simde_uint32x4_t mask = simde_vceqq_f32(value, targetsVector);
         if (simde_vget_lane_u64(simde_vreinterpret_u64_u16(simde_vmovn_u32(mask)), 0)) {
             simde_uint32x4_t ranked = simde_vornq_u32(indexMask, mask);
             uint32_t index = simde_vminvq_u32(ranked);
-            return (index < length) ? cursor + index : nullptr;
+            return (index < cursor.size()) ? cursor.subspan(index).data() : nullptr;
         }
-        if (length <= stride)
+        if (cursor.size() <= stride)
             return nullptr;
-        length -= stride;
-        cursor += stride;
+        cursor = cursor.subspan(stride);
     }
 }
 
 SUPPRESS_NODELETE SUPPRESS_ASAN
-const double* findDoubleAlignedImpl(const double* pointer, double target, size_t length)
+const double* findDoubleAlignedImpl(std::span<const double> buffer, double target)
 {
-    ASSERT(!(reinterpret_cast<uintptr_t>(pointer) & 0b111));
+    ASSERT(!(reinterpret_cast<uintptr_t>(buffer.data()) & 0b111));
 
     constexpr simde_uint32x2_t indexMask { 0, 1 };
 
-    ASSERT(length);
-    ASSERT(!(reinterpret_cast<uintptr_t>(pointer) & 0xf));
-    ASSERT((reinterpret_cast<uintptr_t>(pointer) & ~static_cast<uintptr_t>(0xf)) == reinterpret_cast<uintptr_t>(pointer));
-    const double* cursor = pointer;
+    ASSERT(buffer.size());
+    ASSERT(!(reinterpret_cast<uintptr_t>(buffer.data()) & 0xf));
+    ASSERT((reinterpret_cast<uintptr_t>(buffer.data()) & ~static_cast<uintptr_t>(0xf)) == reinterpret_cast<uintptr_t>(buffer.data()));
+    std::span<const double> cursor = buffer;
     constexpr size_t stride = SIMD::stride<double>;
 
     simde_float64x2_t targetsVector = simde_vdupq_n_f64(target);
 
     while (true) {
-        simde_float64x2_t value = simde_vld1q_f64(cursor);
+        simde_float64x2_t value = simde_vld1q_f64(cursor.data());
         simde_uint64x2_t mask = simde_vceqq_f64(value, targetsVector);
         simde_uint32x2_t reducedMask = simde_vmovn_u64(mask);
         if (simde_vget_lane_u64(simde_vreinterpret_u64_u32(reducedMask), 0)) {
             simde_uint32x2_t ranked = simde_vorn_u32(indexMask, reducedMask);
             uint32_t index = simde_vminv_u32(ranked);
-            return (index < length) ? cursor + index : nullptr;
+            return (index < cursor.size()) ? cursor.subspan(index).data() : nullptr;
         }
-        if (length <= stride)
+        if (cursor.size() <= stride)
             return nullptr;
-        length -= stride;
-        cursor += stride;
+        cursor = cursor.subspan(stride);
     }
 }
+
+WTF_ALLOW_UNSAFE_BUFFER_USAGE_BEGIN
 
 SUPPRESS_NODELETE SUPPRESS_ASAN
 const Latin1Character* find8NonASCIIAlignedImpl(std::span<const Latin1Character> data)

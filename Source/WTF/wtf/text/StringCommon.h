@@ -796,7 +796,7 @@ ALWAYS_INLINE const Float16* NODELETE findFloat16(const Float16* pointer, Float1
     return nullptr;
 }
 
-WTF_EXPORT_PRIVATE const float* NODELETE findFloatAlignedImpl(const float* pointer, float target, size_t length);
+WTF_EXPORT_PRIVATE const float* NODELETE findFloatAlignedImpl(std::span<const float> buffer, float target);
 
 #if CPU(ARM64)
 SUPPRESS_NODELETE ALWAYS_INLINE const float* NODELETE findFloat(const float* pointer, float target, size_t length)
@@ -816,7 +816,7 @@ SUPPRESS_NODELETE ALWAYS_INLINE const float* NODELETE findFloat(const float* poi
         return nullptr;
 
     ASSERT(index < length);
-    return findFloatAlignedImpl(pointer + index, target, length - index);
+    return findFloatAlignedImpl(std::span { pointer + index, length - index }, target);
 }
 #else
 ALWAYS_INLINE const float* NODELETE findFloat(const float* pointer, float target, size_t length)
@@ -829,7 +829,7 @@ ALWAYS_INLINE const float* NODELETE findFloat(const float* pointer, float target
 }
 #endif
 
-WTF_EXPORT_PRIVATE const double* NODELETE findDoubleAlignedImpl(const double* pointer, double target, size_t length);
+WTF_EXPORT_PRIVATE const double* NODELETE findDoubleAlignedImpl(std::span<const double> buffer, double target);
 
 #if CPU(ARM64)
 SUPPRESS_NODELETE ALWAYS_INLINE const double* NODELETE findDouble(const double* pointer, double target, size_t length)
@@ -849,7 +849,7 @@ SUPPRESS_NODELETE ALWAYS_INLINE const double* NODELETE findDouble(const double* 
         return nullptr;
 
     ASSERT(index < length);
-    return findDoubleAlignedImpl(pointer + index, target, length - index);
+    return findDoubleAlignedImpl(std::span { pointer + index, length - index }, target);
 }
 #else
 ALWAYS_INLINE const double* NODELETE findDouble(const double* pointer, double target, size_t length)
